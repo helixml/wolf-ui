@@ -1,0 +1,11 @@
+FROM ghcr.io/games-on-whales/base-app:edge
+
+# Copy the pre-built Godot binary (relative to docker build context)
+COPY ./builds/helix-lab.x86_64 /usr/bin/helix-lab
+RUN chmod +x /usr/bin/helix-lab
+
+# Set working directory
+WORKDIR /opt/helix-lab
+
+# Run the Godot project
+CMD ["/usr/bin/helix-lab", "--headless"]
