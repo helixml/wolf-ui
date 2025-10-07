@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://portal_prefab"]
 
-[ext_resource type="Script" path="res://Scenes/HelixLab/Portal.cs" id="1"]
+[ext_resource type="Script" path="res://Scenes/HelixLab/Portal.gd" id="1"]
 [ext_resource type="Shader" path="res://Scenes/HelixLab/portal_surface.gdshader" id="2"]
 
 [sub_resource type="TorusMesh" id="TorusMesh_ring"]

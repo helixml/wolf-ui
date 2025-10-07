@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Helix Lab"
 run/main_scene="res://Scenes/HelixLab/HelixLab.tscn"
-config/features=PackedStringArray("4.4", "C#", "GL Compatibility")
+config/features=PackedStringArray("4.5", "GL Compatibility")
 run/max_fps=30
 run/low_processor_mode=true
 boot_splash/show_image=false

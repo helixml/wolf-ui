@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://helix_lab_main"]
 
-[ext_resource type="Script" path="res://Scenes/HelixLab/HelixLab.cs" id="1"]
+[ext_resource type="Script" path="res://Scenes/HelixLab/HelixLab.gd" id="1"]
 [ext_resource type="PackedScene" path="res://Scenes/HelixLab/HelixSign.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://Scenes/HelixLab/Portal.tscn" id="3"]
 
