@@ -5,7 +5,7 @@ ARG GODOT_VERSION=4.4.1
 ##################### build wolf-ui ###########################################################
 ###############################################################################################
 # hadolint ignore=DL3006
-FROM ubuntu:24.10 AS builder
+FROM ubuntu:24.04 AS builder
 ARG GODOT_VERSION
 
 RUN <<_INSTALL_DOTNET

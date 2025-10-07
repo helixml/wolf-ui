@@ -1,0 +1,44 @@
+FROM barichello/godot-ci:4.3 as builder
+
+WORKDIR /build
+COPY src/ /build/
+
+# Create export preset for Linux
+RUN mkdir -p .godot/export && \
+    echo '[preset.0]' > export_presets.cfg && \
+    echo 'name="Linux/X11"' >> export_presets.cfg && \
+    echo 'platform="Linux/X11"' >> export_presets.cfg && \
+    echo 'runnable=true' >> export_presets.cfg && \
+    echo 'export_path="./helix-lab.x86_64"' >> export_presets.cfg
+
+# Export the project
+RUN godot --headless --export-release "Linux/X11" ./helix-lab.x86_64 || true
+
+# Runtime stage - use Games on Whales base
+FROM ghcr.io/games-on-whales/base-app:edge
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    libgl1 \
+    libglu1-mesa \
+    libx11-6 \
+    libxcursor1 \
+    libxinerama1 \
+    libxrandr2 \
+    libxi6 \
+    libpulse0 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy built Godot binary
+COPY --from=builder /build/helix-lab.x86_64 /usr/bin/helix-lab
+COPY --from=builder /build/.godot /opt/helix-lab/.godot
+COPY --from=builder /build/Scenes /opt/helix-lab/Scenes
+COPY --from=builder /build/Resources /opt/helix-lab/Resources
+
+RUN chmod +x /usr/bin/helix-lab
+
+# Set working directory
+WORKDIR /opt/helix-lab
+
+# Run the Godot project
+CMD ["/usr/bin/helix-lab"]
