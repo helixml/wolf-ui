@@ -1,40 +1,33 @@
-[gd_scene load_steps=7 format=3 uid="uid://portal_prefab"]
+[gd_scene load_steps=4 format=3 uid="uid://portal_prefab"]
 
-[ext_resource type="Script" path="res://Scenes/HelixLab/Portal.gd" id="1"]
-[ext_resource type="Shader" path="res://Scenes/HelixLab/portal_surface.gdshader" id="2"]
+[ext_resource type="Script" path="res://Scenes/HelixLab/Portal.gd" id="1_portal"]
+[ext_resource type="Shader" path="res://Scenes/HelixLab/portal_surface.gdshader" id="2_portal_shader"]
 
-[sub_resource type="TorusMesh" id="TorusMesh_ring"]
-inner_radius = 1.5
-outer_radius = 2.0
-rings = 32
-ring_segments = 32
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_portal"]
-shader = ExtResource("2")
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_surface"]
-size = Vector2(3, 3)
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_interaction"]
-radius = 2.5
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1"]
+render_priority = 0
+shader = ExtResource("2_portal_shader")
 
 [node name="Portal" type="Area3D"]
 collision_layer = 2
 collision_mask = 0
-script = ExtResource("1")
+script = ExtResource("1_portal")
 
-[node name="PortalRing" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0)
-mesh = SubResource("TorusMesh_ring")
+[node name="PortalRing" type="CSGTorus3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+inner_radius = 1.5
+outer_radius = 2.0
+sides = 32
+ring_sides = 16
 
-[node name="PortalSurface" type="MeshInstance3D" parent="."]
-material_override = SubResource("ShaderMaterial_portal")
-mesh = SubResource("PlaneMesh_surface")
+[node name="PortalSurface" type="CSGSphere3D" parent="."]
+radius = 1.8
+material = SubResource("ShaderMaterial_1")
 
-[node name="PortalParticles" type="GPUParticles3D" parent="."]
-amount = 200
-lifetime = 3.0
-visibility_aabb = AABB(-3, -3, -3, 6, 6, 6)
+[node name="PortalParticles" type="CPUParticles3D" parent="."]
+amount = 50
+lifetime = 2.0
+emission_shape = 1
+emission_sphere_radius = 2.0
 
 [node name="LobbyLabel" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
@@ -48,9 +41,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
 text = "Status"
 font_size = 16
 modulate = Color(0.7, 0.7, 0.7, 0.8)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("SphereShape3D_interaction")
 
 [node name="PortalLight" type="OmniLight3D" parent="."]
 light_energy = 2.0

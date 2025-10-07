@@ -1,13 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://helix_lab_main"]
+[gd_scene load_steps=4 format=3 uid="uid://helix_lab_main"]
 
-[ext_resource type="Script" path="res://Scenes/HelixLab/HelixLab.gd" id="1"]
-[ext_resource type="PackedScene" path="res://Scenes/HelixLab/HelixSign.tscn" id="2"]
-[ext_resource type="PackedScene" path="res://Scenes/HelixLab/Portal.tscn" id="3"]
+[ext_resource type="Script" path="res://Scenes/HelixLab/HelixLab.gd" id="1_helix_lab"]
+[ext_resource type="PackedScene" uid="uid://helix_sign" path="res://Scenes/HelixLab/HelixSign.tscn" id="2_helix_sign"]
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_floor"]
-size = Vector2(50, 50)
-
-[sub_resource type="StandardMaterial3D" id="Material_floor"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
 albedo_color = Color(0.1, 0.1, 0.15, 1)
 metallic = 0.8
 roughness = 0.2
@@ -16,12 +12,9 @@ emission = Color(0.05, 0.1, 0.2, 1)
 emission_energy_multiplier = 0.3
 
 [node name="HelixLab" type="Node3D"]
-script = ExtResource("1")
+script = ExtResource("1_helix_lab")
 
 [node name="Environment" type="Node3D" parent="."]
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
-environment = SubResource("Environment_1")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
 transform = Transform3D(0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, -0.75, 0.433013, 10, 15, 10)
@@ -35,11 +28,11 @@ light_energy = 0.3
 
 [node name="LabStructure" type="Node3D" parent="."]
 
-[node name="Floor" type="MeshInstance3D" parent="LabStructure"]
-mesh = SubResource("PlaneMesh_floor")
-surface_material_override/0 = SubResource("Material_floor")
+[node name="Floor" type="CSGBox3D" parent="LabStructure"]
+transform = Transform3D(50, 0, 0, 0, 0.1, 0, 0, 0, 50, 0, -0.1, 0)
+material = SubResource("StandardMaterial3D_floor")
 
-[node name="HelixSign" parent="." instance=ExtResource("2")]
+[node name="HelixSign" parent="." instance=ExtResource("2_helix_sign")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, -15)
 
 [node name="PortalGrid" type="Node3D" parent="."]
@@ -57,24 +50,9 @@ collision_mask = 2
 
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="Crosshair" type="Control" parent="UI"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
+[node name="Crosshair" type="ColorRect" parent="UI"]
 offset_left = -2.0
 offset_top = -2.0
 offset_right = 2.0
 offset_bottom = 2.0
-
-[node name="CrosshairDot" type="ColorRect" parent="UI/Crosshair"]
 color = Color(1, 1, 1, 0.7)
-
-[sub_resource type="Environment" id="Environment_1"]
-background_mode = 1
-background_color = Color(0.05, 0.05, 0.1, 1)
-ambient_light_color = Color(0.3, 0.4, 0.6, 1)
-ambient_light_energy = 0.5
-fog_enabled = true
-fog_light_color = Color(0.2, 0.3, 0.5, 1)
-fog_density = 0.01
